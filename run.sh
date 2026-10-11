@@ -11,9 +11,7 @@ for var in B2_BUCKET_NAME B2_ENDPOINT B2_REGION B2_ACCESS_KEY_ID B2_SECRET_ACCES
 done
 
 if [ "$b2_ok" = "true" ]; then
-  echo "B2 configured. Restoring DB from B2..."
-  litestream -config /etc/litestream.yml restore -if-db-not-exists -if-replica-exists /pb/pb_data/data.db || true
-  echo "Starting PocketBase with Litestream..."
+  echo "B2 configured. Starting PocketBase with Litestream replication..."
   exec litestream -config /etc/litestream.yml replicate -exec "pocketbase serve --http=0.0.0.0:8080 --dir /pb/pb_data"
 fi
 
