@@ -1,10 +1,10 @@
-# litestream.yml
 dbs:
   - path: /pb/pb_data/data.db
     replicas:
       - type: s3
-        bucket: "Gammer"
-        path: "pocketbase_live"
-        region: "eu-central-003"
-        endpoint: "https://backblazeb2.com"
-        
+        bucket: "${B2_BUCKET_NAME}"
+        endpoint: "${B2_ENDPOINT}"
+        region: "${B2_REGION}"
+        access-key-id: "${B2_ACCESS_KEY_ID}"
+        secret-access-key: "${B2_SECRET_ACCESS_KEY}"
+
