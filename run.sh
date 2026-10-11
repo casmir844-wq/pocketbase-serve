@@ -3,7 +3,8 @@ set -eu
 
 # Validate required B2 environment variables
 for var in B2_BUCKET_NAME B2_ENDPOINT B2_REGION B2_ACCESS_KEY_ID B2_SECRET_ACCESS_KEY; do
-  if [ -z "${!var:-}" ]; then
+  eval "value=\$$var"
+  if [ -z "$value" ]; then
     echo "Missing required env var: $var"
     exit 1
   fi
