@@ -7,4 +7,3 @@ dbs:
         region: "${B2_REGION}"
         access-key-id: "${B2_ACCESS_KEY_ID}"
         secret-access-key: "${B2_SECRET_ACCESS_KEY}"
-
