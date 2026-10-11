@@ -5,7 +5,7 @@ RUN apk add --no-cache ca-certificates curl unzip openssh
 
 # 1. Download and install PocketBase
 ENV PB_VERSION=0.22.20
-RUN wget https://github.com{PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip \
+RUN wget https://github.com/{PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip \
     && unzip pocketbase_${PB_VERSION}_linux_amd64.zip -d /usr/local/bin/ \
     && rm pocketbase_${PB_VERSION}_linux_amd64.zip
 
