@@ -19,7 +19,6 @@ RUN set -eux; \
     tar -xzf /tmp/litestream.tar.gz -C /usr/local/bin/; \
     rm -f /tmp/litestream.tar.gz
 
-# Application layout
 WORKDIR /pb
 RUN mkdir -p /pb/pb_data
 
