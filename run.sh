@@ -3,8 +3,8 @@ set -eu
 
 b2_ok=true
 for var in B2_BUCKET_NAME B2_ENDPOINT B2_REGION B2_ACCESS_KEY_ID B2_SECRET_ACCESS_KEY; do
-  eval "val=\${$var:-}"
-  if [ -z "$val" ]; then
+  eval "value=\${$var:-}"
+  if [ -z "$value" ]; then
     b2_ok=false
     break
   fi
