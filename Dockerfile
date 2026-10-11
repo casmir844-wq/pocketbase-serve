@@ -15,7 +15,7 @@ RUN set -eux; \
 # Install Litestream
 RUN set -eux; \
     wget -O /tmp/litestream.tar.gz \
-      "https://github.com/benbjohnson/litestream/releases/download/${LITESTREAM_VERSION}/litestream_${LITESTREAM_VERSION#v}_linux_amd64.tar.gz"; \
+      "https://github.com/benbjohnson/litestream/releases/download/${LITESTREAM_VERSION}/litestream-${LITESTREAM_VERSION}-linux-amd64.tar.gz"; \
     tar -xzf /tmp/litestream.tar.gz -C /usr/local/bin/; \
     rm -f /tmp/litestream.tar.gz
 
