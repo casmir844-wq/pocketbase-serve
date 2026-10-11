@@ -1,10 +1,16 @@
 #!/bin/sh
-set -e
+set -eu
 
-# 1. Check Backblaze B2 for an existing database snapshot to download
+# Validate required B2 environment variables
+for var in B2_BUCKET_NAME B2_ENDPOINT B2_REGION B2_ACCESS_KEY_ID B2_SECRET_ACCESS_KEY; do
+  if [ -z "${!var:-}" ]; then
+    echo "Missing required env var: $var"
+    exit 1
+  fi
+done
+
 echo "Checking Backblaze B2 for an existing database backup..."
-litestream restore -if-db-not-exists -if-replica-exists /pb/pb_data/data.db
+litestream -config /etc/litestream.yml restore -if-db-not-exists -if-replica-exists /pb/pb_data/data.db
 
-# 2. Hand off control to Litestream to replicate database transactions while PocketBase serves requests
 echo "Starting PocketBase with Litestream replication active..."
-exec litestream replicate -exec "pocketbase serve --http=0.0.0.0:8080"
+exec litestream -config /etc/litestream.yml replicate -exec "pocketbase serve --http=0.0.0.0:8080 --dir /pb/pb_data"
