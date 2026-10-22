@@ -1,17 +1,17 @@
 FROM alpine:3.21
 
-# Install unzip and certificates
-RUN apk add --no-cache unzip ca-certificates
+# 1. Install curl (Crucial for ZevCloud health check) along with unzip and certs
+RUN apk add --no-cache unzip ca-certificates curl
 
-# Pin the PocketBase version you want to use
+# 2. Download PocketBase
 ARG PB_VERSION=0.22.23
-ADD https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip /tmp/pb.zip
+ADD https://github.com{PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip /tmp/pb.zip
 
-# Unzip and clean up
+# 3. Unzip and set permissions
 RUN unzip /tmp/pb.zip -d /pb/ && rm /tmp/pb.zip && chmod +x /pb/pocketbase
 
-# Expose PocketBase default port
+# 4. Expose the port
 EXPOSE 8090
 
-# Start PocketBase and bind to all network interfaces
+# 5. Start PocketBase
 CMD ["/pb/pocketbase", "serve", "--http=0.0.0.0:8090"]
