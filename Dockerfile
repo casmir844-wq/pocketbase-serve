@@ -11,4 +11,5 @@ RUN wget -q "https://github.com/pocketbase/pocketbase/releases/download/v${PB_VE
 WORKDIR /pb
 EXPOSE 8090
 
-CMD ["/pb/pocketbase", "serve", "--http=0.0.0.0:8090"]
+CMD sh -c "/pb/pocketbase serve --http=0.0.0.0:${PORT:-8090}"
+
