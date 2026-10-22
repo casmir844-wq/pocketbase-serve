@@ -1,30 +1,17 @@
-FROM alpine:3.18
+FROM alpine:3.21
 
-RUN apk add --no-cache ca-certificates curl unzip
+# Install unzip and certificates
+RUN apk add --no-cache unzip ca-certificates
 
-ENV PB_VERSION=0.22.20
-ENV LITESTREAM_VERSION=v0.3.13
+# Pin the PocketBase version you want to use
+ARG PB_VERSION=0.22.23
+ADD https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip /tmp/pb.zip
 
-# Install PocketBase
-RUN set -eux; \
-    wget -O /tmp/pocketbase.zip \
-      "https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip"; \
-    unzip -o /tmp/pocketbase.zip -d /usr/local/bin/; \
-    rm -f /tmp/pocketbase.zip
+# Unzip and clean up
+RUN unzip /tmp/pb.zip -d /pb/ && rm /tmp/pb.zip && chmod +x /pb/pocketbase
 
-# Install Litestream
-RUN set -eux; \
-    wget -O /tmp/litestream.tar.gz \
-      "https://github.com/benbjohnson/litestream/releases/download/${LITESTREAM_VERSION}/litestream-${LITESTREAM_VERSION}-linux-amd64.tar.gz"; \
-    tar -xzf /tmp/litestream.tar.gz -C /usr/local/bin/; \
-    rm -f /tmp/litestream.tar.gz
+# Expose PocketBase default port
+EXPOSE 8090
 
-WORKDIR /pb
-RUN mkdir -p /pb/pb_data
-
-COPY litestream.yml /etc/litestream.yml
-COPY run.sh /pb/run.sh
-RUN chmod +x /pb/run.sh
-
-EXPOSE 8080
-CMD ["/pb/run.sh"]
+# Start PocketBase and bind to all network interfaces
+CMD ["/pb/pocketbase", "serve", "--http=0.0.0.0:8080"]
